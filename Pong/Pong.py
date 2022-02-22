@@ -36,6 +36,35 @@ ball.color("white")
 ball.penup()
 ball.goto(0, 0)
 
+# Movement
+def paddle_1_up():
+    y = paddle_1.ycor() # Save on the "y" variable the value of the Y coordinate
+    y += 20 # Defining new coordinate for Y, moving up
+    paddle_1.sety(y) # Setting new coordinate
+
+def paddle_2_up():
+    y = paddle_2.ycor() 
+    y += 20 
+    paddle_2.sety(y)   
+
+def paddle_1_down():
+    y = paddle_1.ycor() 
+    y -= 20 
+    paddle_1.sety(y) 
+
+def paddle_2_down():
+    y = paddle_2.ycor() 
+    y -= 20 
+    paddle_2.sety(y)       
+
+# Keyboard directions
+window.listen() # To obtain input from keyboard
+window.onkeypress(paddle_1_up, "w") # When pressing "w" call the paddle_1_up() function    
+window.onkeypress(paddle_1_down, "s")
+window.onkeypress(paddle_2_up, "8")
+window.onkeypress(paddle_2_down, "2")
+
+
 # Main game loop
 while True:
     window.update()
