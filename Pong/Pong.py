@@ -1,5 +1,6 @@
 # module for graphics
 import turtle
+import os
 
 # Creating a window with the method of the module
 window = turtle.Screen()
@@ -9,6 +10,10 @@ window.title("Pong Game")
 window.bgcolor("black")
 window.setup(width=800, height=600)
 window.tracer(0) # Manage updating of the screen
+
+# Score
+score_1 = 0
+score_2 = 0
 
 # Paddle 1
 paddle_1 = turtle.Turtle()
@@ -77,11 +82,50 @@ window.onkeypress(paddle_1_down, "s")
 window.onkeypress(paddle_2_up, "8")
 window.onkeypress(paddle_2_down, "2")
 
-
 # Main game loop
 while True:
     window.update()
 
+    # Move the ball
+    ball.setx(ball.xcor() + ball.dx)
+    ball.sety(ball.ycor() + ball.dy)
+
+    # Border checking
+
+    # Top and bottom
+    if ball.ycor() > 290:
+        ball.sety(290)
+        ball.dy *= -1
+        os.system("afplay bounce.wav&")
+    
+    elif ball.ycor() < -290:
+        ball.sety(-290)
+        ball.dy *= -1
+        os.system("afplay bounce.wav&")
+
+    # Left and right
+    if ball.xcor() > 350:
+        score_1 += 1
+        pen.clear()
+        pen.write("Player A: {}  Player B: {}".format(score_1, score_2), align="center", font=("Courier", 24, "normal"))
+        ball.goto(0, 0)
+        ball.dx *= -1
+
+    elif ball.xcor() < -350:
+        score_2 += 1
+        pen.clear()
+        pen.write("Player A: {}  Player B: {}".format(score_1, score_2), align="center", font=("Courier", 24, "normal"))
+        ball.goto(0, 0)
+        ball.dx *= -1
+
+    # Paddle and ball collisions
+    if ball.xcor() < -340 and ball.ycor() < paddle_1.ycor() + 50 and ball.ycor() > paddle_1.ycor() - 50:
+        ball.dx *= -1 
+        os.system("afplay bounce.wav&")
+    
+    elif ball.xcor() > 340 and ball.ycor() < paddle_2.ycor() + 50 and ball.ycor() > paddle_2.ycor() - 50:
+        ball.dx *= -1
+        os.system("afplay bounce.wav&")
 
 
 
