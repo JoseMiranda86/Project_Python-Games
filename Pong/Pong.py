@@ -93,39 +93,14 @@ while True:
     # Border checking
 
     # Top and bottom
-    if ball.ycor() > 290:
-        ball.sety(290)
+    if ball.ycor() > 145:
+        ball.sety(145)
         ball.dy *= -1
         os.system("afplay bounce.wav&")
     
-    elif ball.ycor() < -290:
-        ball.sety(-290)
+    elif ball.ycor() < -145:
+        ball.sety(-145)
         ball.dy *= -1
         os.system("afplay bounce.wav&")
-
-    # Left and right
-    if ball.xcor() > 350:
-        score_1 += 1
-        pen.clear()
-        pen.write("Player A: {}  Player B: {}".format(score_1, score_2), align="center", font=("Courier", 24, "normal"))
-        ball.goto(0, 0)
-        ball.dx *= -1
-
-    elif ball.xcor() < -350:
-        score_2 += 1
-        pen.clear()
-        pen.write("Player A: {}  Player B: {}".format(score_1, score_2), align="center", font=("Courier", 24, "normal"))
-        ball.goto(0, 0)
-        ball.dx *= -1
-
-    # Paddle and ball collisions
-    if ball.xcor() < -340 and ball.ycor() < paddle_1.ycor() + 50 and ball.ycor() > paddle_1.ycor() - 50:
-        ball.dx *= -1 
-        os.system("afplay bounce.wav&")
-    
-    elif ball.xcor() > 340 and ball.ycor() < paddle_2.ycor() + 50 and ball.ycor() > paddle_2.ycor() - 50:
-        ball.dx *= -1
-        os.system("afplay bounce.wav&")
-
 
 
