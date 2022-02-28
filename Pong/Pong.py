@@ -40,9 +40,8 @@ ball.shape("square")
 ball.color("white")
 ball.penup()
 ball.goto(0, 0)
-ball.goto(0, 0)
-ball.dx = 2
-ball.dy = 2
+ball.dx = 0.1 # Defining the amount of pixels the ball moves each time
+ball.dy = 0.1
 
 # Pen
 pen = turtle.Turtle()
@@ -54,7 +53,7 @@ pen.hideturtle()
 pen.goto(0, 260)
 pen.write("Player A: 0  Player B: 0", align="center", font=("Courier", 24, "normal"))
 
-# Movement
+# Movement of paddles
 def paddle_1_up():
     y = paddle_1.ycor() # Save on the "y" variable the value of the Y coordinate
     y += 20 # Defining new coordinate for Y, moving up
@@ -86,21 +85,40 @@ window.onkeypress(paddle_2_down, "2")
 while True:
     window.update()
 
-    # Move the ball
+    # Changing the position of the ball to create the movement
     ball.setx(ball.xcor() + ball.dx)
     ball.sety(ball.ycor() + ball.dy)
 
-    # Border checking
-
-    # Top and bottom
-    if ball.ycor() > 145:
-        ball.sety(145)
-        ball.dy *= -1
-        os.system("afplay bounce.wav&")
+    # Checking position of the ball respect the top and bottom borders
+    if ball.ycor() > 290:
+        ball.sety(290)
+        ball.dy *= -1 # Reverses the direction of the movement
     
-    elif ball.ycor() < -145:
-        ball.sety(-145)
+    if ball.ycor() < -290:
+        ball.sety(-290)
         ball.dy *= -1
-        os.system("afplay bounce.wav&")
 
+    # Checking position of the ball respect to the right and left borders
+    if ball.xcor() > 350:
+        score_1 += 1
+        pen.clear() # Reset counter
+        pen.write("Player A: {}  Player B: {}".format(score_1, score_2), align="center", font=("arial", 28, "normal"))
+        ball.goto(0, 0) # Send ball back to the center
+        ball.dx *= -1   
+
+    if ball.xcor() < -350:
+        score_2 += 1
+        pen.clear()
+        pen.write("Player A: {}  Player B: {}".format(score_1, score_2), align="center", font=("arial", 28, "normal"))
+        ball.goto(0, 0)
+        ball.dx *= -1   
+
+    # Rebound process on paddle
+    if (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < paddle_2.ycor() + 40 and ball.ycor() > paddle_2.ycor() - 40):
+       ball.setx(340)
+       ball.dx *= -1 
+
+    if (ball.xcor() < -340 and ball.xcor() > -350) and (ball.ycor() < paddle_1.ycor() + 40 and ball.ycor() > paddle_1.ycor() - 40):
+       ball.setx(-340)
+       ball.dx *= -1 
 
