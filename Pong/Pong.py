@@ -1,6 +1,5 @@
 # module for graphics
 import turtle
-import os
 
 # Creating a window with the method of the module
 window = turtle.Screen()
@@ -11,25 +10,24 @@ window.bgcolor("black")
 window.setup(width=800, height=600)
 window.tracer(0) # Manage updating of the screen
 
-# Score
 score_1 = 0
 score_2 = 0
 
 # Paddle 1
 paddle_1 = turtle.Turtle()
-paddle_1.speed(0)
 paddle_1.shape("square")
 paddle_1.shapesize(stretch_len=1, stretch_wid=5)
 paddle_1.color("white")
+paddle_1.speed(0)
 paddle_1.penup()
 paddle_1.goto(-350, 0)
 
 # Paddle 2
 paddle_2 = turtle.Turtle()
-paddle_2.speed(0)
 paddle_2.shape("square")
 paddle_2.shapesize(stretch_len=1, stretch_wid=5)
 paddle_2.color("white")
+paddle_2.speed(0)
 paddle_2.penup()
 paddle_2.goto(350, 0)
 
@@ -40,8 +38,8 @@ ball.shape("square")
 ball.color("white")
 ball.penup()
 ball.goto(0, 0)
-ball.dx = 0.1 # Defining the amount of pixels the ball moves each time
-ball.dy = 0.1
+ball.dx = 0.25 # Defining the amount of pixels the ball moves each time
+ball.dy = 0.25
 
 # Pen
 pen = turtle.Turtle()
@@ -51,7 +49,7 @@ pen.color("white")
 pen.penup()
 pen.hideturtle()
 pen.goto(0, 260)
-pen.write("Player A: 0  Player B: 0", align="center", font=("Courier", 24, "normal"))
+pen.write("Player 1:  0  Player 2:  0", align="center", font=("arial", 18, "normal"))
 
 # Movement of paddles
 def paddle_1_up():
@@ -102,14 +100,14 @@ while True:
     if ball.xcor() > 350:
         score_1 += 1
         pen.clear() # Reset counter
-        pen.write("Player A: {}  Player B: {}".format(score_1, score_2), align="center", font=("arial", 28, "normal"))
+        pen.write("Player 1:  {}  Player 2:  {}".format(score_1, score_2), align="center", font=("arial", 18, "normal"))
         ball.goto(0, 0) # Send ball back to the center
         ball.dx *= -1   
 
     if ball.xcor() < -350:
         score_2 += 1
         pen.clear()
-        pen.write("Player A: {}  Player B: {}".format(score_1, score_2), align="center", font=("arial", 28, "normal"))
+        pen.write("Player 1:  {}  Player 2:  {}".format(score_1, score_2), align="center", font=("arial", 18, "normal"))
         ball.goto(0, 0)
         ball.dx *= -1   
 
