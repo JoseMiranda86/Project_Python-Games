@@ -21,16 +21,45 @@ class snake(object):
     def movement(self):
         pass
 
+# Creating grid
+def drawGrid(w, rows,surface):
+    sizeBtwn = w // rows
+
+    x = 0
+    y = 0
+
+    for l in range(rows):
+        x = x + sizeBtwn
+        y = y + sizeBtwn
+
+        pygame.draw.line(surface, (255,255,255), (x, 0), (x, w))
+        pygame.draw.line(surface, (255,255,255), (0, y), (w, y))
+
+# Updating grid
+def redrawWindow(surface):
+    global rows, width
+    surface.fill((0,0,0))
+    drawGrid(width, rows, surface)
+    pygame.display.update()
+
 # Main loop of the game
 def main():
-    Width = 500
-    Height = 500
-    Rows = 20
+    global width, rows
+    width = 500
+    rows = 20
 
-    Window = pygame.display.set_mode((Width, Height)) # Defining display
-    Snake = snake((255, 255, 255), (10, 10)) # Creating snake object
-    Flag = True 
+    win = pygame.display.set_mode((width, width)) # Defining display
+    snake = snake((255, 0, 0), (10, 10)) # Creating snake object
+    flag = True 
 
-    Clock_game = pygame.time.Clock() # Defining variable related to the speed of the movement
+    clock_game = pygame.time.Clock() # Defining variable related to the speed of the movement
 
+    while flag:
+        # Controlling the speed of movement
+        pygame.time.delay(50)
+        clock_game.tick(10)
+
+        redrawWindow (win)
+
+    pass    
     
