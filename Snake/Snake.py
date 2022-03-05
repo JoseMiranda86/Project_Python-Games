@@ -1,9 +1,9 @@
 
 import pygame 
 
-class dot(object):
+class cube(object):
     rows = 0
-    w =0
+    w = 0
 
     def __init__(self, start, dirnx=1, dirny=0, color=(255,0,0)):
         pass
@@ -15,11 +15,45 @@ class dot(object):
         pass
 
 class snake(object):
+    body = []
+    turns = {}
+
     def __init__(self, color, pos):
-        pass
+        self.color = color
+        self.head = cube(pos)
+        self.body.append(self.head)
+        self.dirnx = 0
+        self.dirny = 1
 
     def movement(self):
-        pass
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+
+        keys = pygame.key.get_pressed()
+
+        for key in keys:
+            if keys [pygame.K_LEFT] :
+                self.dirnx = -1
+                self.dirny = 0
+                self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]        
+
+            elif keys [pygame.K_RIGHT] :
+                self.dirnx = 1
+                self.dirny = 0
+                self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]    
+
+            elif keys [pygame.K_UP] :
+                self.dirnx = 0
+                self.dirny = -1
+                self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+
+            elif keys [pygame.K_DOWN] :
+                self.dirnx = 0
+                self.dirny = 1
+                self.turns[self.head.pos[:]] = [self.dirnx, self.dirny]
+
+        
 
 # Creating grid
 def drawGrid(w, rows,surface):
