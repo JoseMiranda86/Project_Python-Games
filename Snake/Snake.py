@@ -5,7 +5,7 @@ import pygame
 import tkinter as tk
 from tkinter import messagebox
 
-class dot(object):
+class New_dot(object):
     rows = 20
     width = 500
 
@@ -20,28 +20,28 @@ class dot(object):
         self.diry = diry
         self.pos = (self.pos[0] + self.dirx, self.pos[1] + self.diry)
 
-    def draw(self, surface, head=False):
-        dis = self.width // self.rows
+    def drawing(self, surface, headSnake=False):
+        disgrid = self.width // self.rows
         i = self.pos[0]
         j = self.pos[1]
  
-        pygame.draw.rect(surface, self.color, (i*dis+1,j*dis+1, dis-2, dis-2))
-        if head:
-            centre = dis//2
+        pygame.drawing.rect(surface, self.color, (i*disgrid+1,j*disgrid+1, disgrid-2, disgrid-2))
+        if headSnake:
+            centre = disgrid//2
             radius = 3
-            circleMiddle = (i*dis+centre-radius,j*dis+8)
-            circleMiddle2 = (i*dis + dis -radius*2, j*dis+8)
-            pygame.draw.circle(surface, (0,0,0), circleMiddle, radius)
-            pygame.draw.circle(surface, (0,0,0), circleMiddle2, radius)
+            circleMiddle = (i*disgrid+centre-radius,j*disgrid+8)
+            circleMiddle2 = (i*disgrid + disgrid -radius*2, j*disgrid+8)
+            pygame.drawing.circle(surface, (0,0,0), circleMiddle, radius)
+            pygame.drawing.circle(surface, (0,0,0), circleMiddle2, radius)
 
 class snake(object):
-    body = []
+    body_snake = []
     turns = {}
 
     def __init__(self, color, pos):
         self.color = color
-        self.head = dot(pos)
-        self.body.append(self.head)
+        self.headSnake = New_dot(pos)
+        self._snake.append(self.headSnake)
         self.dirx = 0
         self.diry = 1
 
@@ -56,30 +56,30 @@ class snake(object):
             if keys [pygame.K_LEFT] :
                 self.dirx = -1
                 self.diry = 0
-                self.turns[self.head.pos[:]] = [self.dirx, self.diry]        
+                self.turns[self.headSnake.pos[:]] = [self.dirx, self.diry]        
 
             elif keys [pygame.K_RIGHT] :
                 self.dirx = 1
                 self.diry = 0
-                self.turns[self.head.pos[:]] = [self.dirx, self.diry]    
+                self.turns[self.headSnake.pos[:]] = [self.dirx, self.diry]    
 
             elif keys [pygame.K_UP] :
                 self.dirx = 0
                 self.diry = -1
-                self.turns[self.head.pos[:]] = [self.dirx, self.diry]
+                self.turns[self.headSnake.pos[:]] = [self.dirx, self.diry]
 
             elif keys [pygame.K_DOWN] :
                 self.dirx = 0
                 self.diry = 1
-                self.turns[self.head.pos[:]] = [self.dirx, self.diry]
+                self.turns[self.headSnake.pos[:]] = [self.dirx, self.diry]
 
-        # Random movement of new dot
-        for i, c in enumerate(self.body):
+        # Random movement of new New_dot
+        for i, c in enumerate(self._snake):
             p = c.pos[:]
             if p in self.turns:
                 turn = self.turns[p]
                 c.move(turn [0], turn[1])
-                if i == len(self.body) - 1:
+                if i == len(self._snake) - 1:
                     self.turns.pop(p)  
 
             else:
@@ -90,35 +90,35 @@ class snake(object):
                 else: c.move(c.dirx,c.diry)
 
     def reset(self, pos):
-        self.head = dot(pos)
-        self.body = []
-        self.body.append(self.head)
+        self.headSnake = New_dot(pos)
+        self._snake = []
+        self._snake.append(self.headSnake)
         self.turns = {}
         self.dirx = 0
         self.diry = 1
 
     def adddot(self):
-        tail = self.body[-1]
+        tail = self._snake[-1]
         dx, dy = tail.dirx, tail.diry
  
         if dx == 1 and dy == 0:
-            self.body.append(dot((tail.pos[0]-1,tail.pos[1])))
+            self._snake.append(New_dot((tail.pos[0]-1,tail.pos[1])))
         elif dx == -1 and dy == 0:
-            self.body.append(dot((tail.pos[0]+1,tail.pos[1])))
+            self._snake.append(New_dot((tail.pos[0]+1,tail.pos[1])))
         elif dx == 0 and dy == 1:
-            self.body.append(dot((tail.pos[0],tail.pos[1]-1)))
+            self._snake.append(New_dot((tail.pos[0],tail.pos[1]-1)))
         elif dx == 0 and dy == -1:
-            self.body.append(dot((tail.pos[0],tail.pos[1]+1)))
+            self._snake.append(New_dot((tail.pos[0],tail.pos[1]+1)))
  
-        self.body[-1].dirx = dx
-        self.body[-1].diry = dy
+        self._snake[-1].dirx = dx
+        self._snake[-1].diry = dy
 
-    def draw(self, surface):
-        for i, c in enumerate(self.body):
+    def drawing_snake(self, surface):
+        for i, c in enumerate(self._snake):
             if i == 0:
-                c.draw(surface, True)
+                c.drawing_snake(surface, True)
             else:
-                c.draw(surface)
+                c.drawing_snake(surface)
 
 # Creating grid
 def drawGrid(width, rows,surface):
@@ -131,20 +131,20 @@ def drawGrid(width, rows,surface):
         x = x + sizeBtwn
         y = y + sizeBtwn
 
-        pygame.draw.line(surface, (255,255,255), (x, 0), (x, width))
-        pygame.draw.line(surface, (255,255,255), (0, y), (width, y))
+        pygame.drawing.line(surface, (255,255,255), (x, 0), (x, width))
+        pygame.drawing.line(surface, (255,255,255), (0, y), (width, y))
 
 # Updating grid
 def redrawWindow(surface):
     global rows, width, snake_object, newDot
     surface.fill((0,0,0))
-    snake_object.draw(surface)
-    newDot.draw(surface)
+    snake_object.drawing(surface)
+    newDot.drawing(surface)
     drawGrid(width, rows, surface)
     pygame.display.update()
 
 def randomnewDot(rows, items):
-    positions = items.body
+    positions = items._snake
 
     while True:
         x = random.randrange(rows)
@@ -174,7 +174,7 @@ def main():
 
     win = pygame.display.set_mode((width, width)) # Defining display
     snake_object = snake((255, 0, 0), (10, 10)) # Creating snake object
-    newDot = dot(randomnewDot(rows, snake_object), color = (0, 255, 0))
+    newDot = New_dot(randomnewDot(rows, snake_object), color = (0, 255, 0))
     flag = True 
 
     clock_game = pygame.time.Clock() # Defining variable related to the speed of the movement
@@ -184,13 +184,13 @@ def main():
         pygame.time.delay(50)
         clock_game.tick(10)
         snake_object.move()
-        if snake_object.body[0].pos == newDot.pos:
+        if snake_object._snake[0].pos == newDot.pos:
             snake_object.adddot()
-            newDot = dot(randomnewDot(rows, snake_object), color = (0, 255, 0))
+            newDot = New_dot(randomnewDot(rows, snake_object), color = (0, 255, 0))
 
-        for x in range(len(snake_object.body)):
-            if snake_object.body[x].pos in list(map(lambda z:z.pos,snake_object.body[x+1:])):
-                print('Score: ', len(snake_object.body))
+        for x in range(len(snake_object._snake)):
+            if snake_object._snake[x].pos in list(map(lambda z:z.pos,snake_object._snake[x+1:])):
+                print('Score: ', len(snake_object._snake))
                 message_box('You Lost!', 'Play again')
                 snake_object.reset((10,10))
                 break
