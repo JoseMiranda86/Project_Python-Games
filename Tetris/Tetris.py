@@ -1,4 +1,6 @@
+
 import pygame
+import random
 
 pygame.font.init()
  
@@ -157,3 +159,35 @@ def convert_shape_format(shape):
         positions[i] = (pos[0] - 2, pos[1] - 4)
 
     return positions
+
+def empty_space(shape, grid):
+    valid_positions = [[(j, i) for j in range(10) if grid[i][j] == (0,0,0)] for i in range(20)]
+    valid_positions = [j for sub in valid_positions for j in sub]
+    formatted = convert_shape_format(shape)
+
+    for pos in formatted:
+        if pos not in valid_positions:
+            if pos[1] > -1:
+                return False
+
+    return True
+
+def checking_lost(positions):
+    for pos in positions:
+        x, y = pos
+        if y < 1:
+            return True
+    return False
+
+
+def get_shape():
+    global shapes, shape_colors
+
+    return Block(5, 0, random.choice(shapes))
+
+
+def draw_text_middle(text, size, color, surface):
+    font = pygame.font.SysFont('comicsans', size, bold=True)
+    label = font.render(text, 1, color)
+
+    surface.blit(label, (top_left_x + playing_area_width/2 - (label.get_width() / 2), top_left_y + playing_area_height/2 - label.get_height()/2))
