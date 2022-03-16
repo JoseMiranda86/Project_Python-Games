@@ -191,3 +191,30 @@ def draw_text_middle(text, size, color, surface):
     label = font.render(text, 1, color)
 
     surface.blit(label, (top_left_x + playing_area_width/2 - (label.get_width() / 2), top_left_y + playing_area_height/2 - label.get_height()/2))
+
+def draw_grid(surface, row, col):
+    sx = top_left_x
+    sy = top_left_y
+    for i in range(row):
+        pygame.draw.line(surface, (128,128,128), (sx, sy+ i*30), (sx + playing_area_width, sy + i * 30))  
+        for j in range(col):
+            pygame.draw.line(surface, (128,128,128), (sx + j * 30, sy), (sx + j * 30, sy + playing_area_height))  
+
+def clear_rows(grid, locked):
+    inc = 0
+    for i in range(len(grid)-1,-1,-1):
+        row = grid[i]
+        if (0, 0, 0) not in row:
+            inc += 1
+            ind = i
+            for j in range(len(row)):
+                try:
+                    del locked[(j, i)]
+                except:
+                    continue
+    if inc > 0:
+        for key in sorted(list(locked), key=lambda x: x[1])[::-1]:
+            x, y = key
+            if y < ind:
+                newKey = (x, y + inc)
+                locked[newKey] = locked.pop(key)
