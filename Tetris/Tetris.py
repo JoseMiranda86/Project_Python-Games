@@ -310,3 +310,28 @@ def main():
                        current_piece.y += 1
                    current_piece.y -= 1
                    print(convert_shape_format(current_piece))
+
+        shape_pos = convert_shape_format(current_piece)
+
+        for i in range(len(shape_pos)):
+            x, y = shape_pos[i]
+            if y > -1:
+                grid[y][x] = current_piece.color
+
+        if change_piece:
+            for pos in shape_pos:
+                p = (pos[0], pos[1])
+                locked_positions[p] = current_piece.color
+            current_piece = next_piece
+            next_piece = get_shape()
+            change_piece = False
+
+            clear_rows(grid, locked_positions)
+
+        draw_window(win)
+        draw_next_shape(next_piece, win)
+        pygame.display.update()
+
+        # Check if user lost
+        if check_lost(locked_positions):
+            run = False
