@@ -333,5 +333,29 @@ def main():
         pygame.display.update()
 
         # Check if user lost
-        if check_lost(locked_positions):
+        if checking_lost(locked_positions):
             run = False
+
+    draw_text_middle("You Lost", 40, (255,255,255), win)
+    pygame.display.update()
+    pygame.time.delay(2000)
+
+def main_menu():
+    run = True
+    while run:
+        win.fill((0,0,0))
+        draw_text_middle('Press any key to begin.', 60, (255, 255, 255), win)
+        pygame.display.update()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+
+            if event.type == pygame.KEYDOWN:
+                main()
+    pygame.quit()
+
+
+win = pygame.display.set_mode((screen_width, screen_height))
+pygame.display.set_caption('Tetris')
+
+main_menu()            
