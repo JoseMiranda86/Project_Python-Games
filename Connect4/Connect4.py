@@ -11,14 +11,14 @@ YELLOW = (255,255,0)
 ROW_COUNT = 6
 COLUMN_COUNT = 7
 
-def create_board():
+def creation_board():
 	board = np.zeros((ROW_COUNT,COLUMN_COUNT))
 	return board
 
-def drop_piece(board, row, col, piece):
+def fall_piece(board, row, col, piece):
 	board[row][col] = piece
 
-def is_valid_location(board, col):
+def valid_location(board, col):
 	return board[ROW_COUNT-1][col] == 0
 
 def get_next_open_row(board, col):
@@ -27,7 +27,7 @@ def get_next_open_row(board, col):
 			return r
 
 
-def print_board(board):
+def printing_board(board):
 	print(np.flip(board, 0))
 
 def winning_move(board, piece):
@@ -51,7 +51,7 @@ def winning_move(board, piece):
 			if board[r][c] == piece and board[r-1][c+1] == piece and board[r-2][c+2] == piece and board[r-3][c+3] == piece:
 				return True
 
-def draw_board(board):
+def drawing_board(board):
 	for c in range(COLUMN_COUNT):
 		for r in range(ROW_COUNT):
 			pygame.draw.rect(screen, BLUE, (c*SQUARESIZE, r*SQUARESIZE+SQUARESIZE, SQUARESIZE, SQUARESIZE))
@@ -65,8 +65,8 @@ def draw_board(board):
 				pygame.draw.circle(screen, YELLOW, (int(c*SQUARESIZE+SQUARESIZE/2), height-int(r*SQUARESIZE+SQUARESIZE/2)), RADIUS)
 	pygame.display.update()
 
-board = create_board()
-print_board(board)
+board = creation_board()
+printing_board(board)
 game_over = False
 turn = 0
 
@@ -82,7 +82,7 @@ size = (width, height)
 RADIUS = int(SQUARESIZE/2 - 5)
 
 screen = pygame.display.set_mode(size)
-draw_board(board)
+drawing_board(board)
 pygame.display.update()
 
 myfont = pygame.font.SysFont("monospace", 75)
@@ -112,9 +112,9 @@ while not game_over:
 				posx = event.pos[0]
 				col = int(math.floor(posx/SQUARESIZE))
 
-				if is_valid_location(board, col):
+				if valid_location(board, col):
 					row = get_next_open_row(board, col)
-					drop_piece(board, row, col, 1)
+					fall_piece(board, row, col, 1)
 
 					if winning_move(board, 1):
 						label = myfont.render("Player 1 wins!!", 1, RED)
@@ -125,17 +125,17 @@ while not game_over:
 				posx = event.pos[0]
 				col = int(math.floor(posx/SQUARESIZE))
 
-				if is_valid_location(board, col):
+				if valid_location(board, col):
 					row = get_next_open_row(board, col)
-					drop_piece(board, row, col, 2)
+					fall_piece(board, row, col, 2)
 
 					if winning_move(board, 2):
 						label = myfont.render("Player 2 wins!!", 1, YELLOW)
 						screen.blit(label, (40,10))
 						game_over = True
 
-			print_board(board)
-			draw_board(board)
+			printing_board(board)
+			drawing_board(board)
 
 			turn += 1
 			turn = turn % 2
