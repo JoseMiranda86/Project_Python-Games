@@ -172,3 +172,22 @@ while not game_over:
 			else:
 				posx = event.pos[0]
 				col = int(math.floor(posx/SQUARESIZE))
+
+
+				if available_location(board, col):
+					row = next_open_row(board, col)
+					fall_piece(board, row, col, 2)
+
+					if winning_move(board, 2):
+						label = myfont.render("Player 2 wins!!", 1, YELLOW)
+						screen.blit(label, (40,10))
+						game_over = True
+
+			printing_board(board)
+			drawing_board(board)
+
+			turn += 1
+			turn = turn % 2
+
+			if game_over:
+				pygame.time.wait(3000)
