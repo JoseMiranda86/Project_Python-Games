@@ -12,46 +12,46 @@ RCount = 6
 CCount = 7
 
 def board():
-	board = np.zeros((RCount,CCount))
-	return board
+	Board = np.zeros((RCount,CCount))
+	return Board
 
-def fall_piece(board, row, col, piece):
-	board[row][col] = piece
+def fall_piece(Board, row, col, piece):
+	Board[row][col] = piece
 
-def available_location(board, col):
-	return board[RCount-1][col] == 0
+def available_location(Board, col):
+	return Board[RCount-1][col] == 0
 
-def next_open_row(board, col):
+def next_open_row(Board, col):
 	for r in range(RCount):
-		if board[r][col] == 0:
+		if Board[r][col] == 0:
 			return r
 
 
-def printing_board(board):
-	print(np.flip(board, 0))
+def printing_board(Board):
+	print(np.flip(Board, 0))
 
-def winning_move(board, piece):
+def winning_move(Board, piece):
 	for c in range(CCount-3):
 		for r in range(RCount):
-			if board[r][c] == piece and board[r][c+1] == piece and board[r][c+2] == piece and board[r][c+3] == piece:
+			if Board[r][c] == piece and Board[r][c+1] == piece and Board[r][c+2] == piece and Board[r][c+3] == piece:
 				return True
 
 	for c in range(CCount):
 		for r in range(RCount-3):
-			if board[r][c] == piece and board[r+1][c] == piece and board[r+2][c] == piece and board[r+3][c] == piece:
+			if Board[r][c] == piece and Board[r+1][c] == piece and Board[r+2][c] == piece and Board[r+3][c] == piece:
 				return True
 
 	for c in range(CCount-3):
 		for r in range(RCount-3):
-			if board[r][c] == piece and board[r+1][c+1] == piece and board[r+2][c+2] == piece and board[r+3][c+3] == piece:
+			if Board[r][c] == piece and Board[r+1][c+1] == piece and Board[r+2][c+2] == piece and Board[r+3][c+3] == piece:
 				return True
 
 	for c in range(CCount-3):
 		for r in range(3, RCount):
-			if board[r][c] == piece and board[r-1][c+1] == piece and board[r-2][c+2] == piece and board[r-3][c+3] == piece:
+			if Board[r][c] == piece and Board[r-1][c+1] == piece and Board[r-2][c+2] == piece and Board[r-3][c+3] == piece:
 				return True
 
-def drawing_board(board):
+def drawing_board(Board):
 	for c in range(CCount):
 		for r in range(RCount):
 			pygame.draw.rect(screen, BLUE, (c*SQUARESIZE, r*SQUARESIZE+SQUARESIZE, SQUARESIZE, SQUARESIZE))
@@ -59,14 +59,14 @@ def drawing_board(board):
 
 	for c in range(CCount):
 		for r in range(RCount):
-			if board[r][c] == 1:
+			if Board[r][c] == 1:
 				pygame.draw.circle(screen, RED, (int(c*SQUARESIZE+SQUARESIZE/2), height-int(r*SQUARESIZE+SQUARESIZE/2)), RADIUS)
-			elif board[r][c] == 2:
+			elif Board[r][c] == 2:
 				pygame.draw.circle(screen, YELLOW, (int(c*SQUARESIZE+SQUARESIZE/2), height-int(r*SQUARESIZE+SQUARESIZE/2)), RADIUS)
 	pygame.display.update()
 
-board = board()
-printing_board(board)
+Board = board()
+printing_board(Board)
 game_over = False
 turn = 0
 
@@ -82,11 +82,10 @@ size = (width, height)
 RADIUS = int(SQUARESIZE/2 - 5)
 
 screen = pygame.display.set_mode(size)
-drawing_board(board)
+drawing_board(Board)
 pygame.display.update()
 
 myfont = pygame.font.SysFont("monospace", 75)
-
 
 while not game_over:
 	
@@ -110,11 +109,11 @@ while not game_over:
 				posx = event.pos[0]
 				col = int(math.floor(posx/SQUARESIZE))
 
-				if is_valid_location(board, col):
-					row = get_next_open_row(board, col)
-					drop_piece(board, row, col, 1)
+				if available_location(Board, col):
+					row = get_next_open_row(Board, col)
+					drop_piece(Board, row, col, 1)
 
-					if winning_move(board, 1):
+					if winning_move(Board, 1):
 						label = myfont.render("Player 1 wins", 1, RED)
 						screen.blit(label, (40,10))
 						game_over = True
@@ -123,17 +122,17 @@ while not game_over:
 				posx = event.pos[0]
 				col = int(math.floor(posx/SQUARESIZE))
 
-				if is_valid_location(board, col):
-					row = get_next_open_row(board, col)
-					drop_piece(board, row, col, 2)
+				if available_location(Board, col):
+					row = get_next_open_row(Board, col)
+					drop_piece(Board, row, col, 2)
 
-					if winning_move(board, 2):
+					if winning_move(Board, 2):
 						label = myfont.render("Player 2 wins!!", 1, YELLOW)
 						screen.blit(label, (40,10))
 						game_over = True
 
-			print_board(board)
-			draw_board(board)
+			printing_board(Board)
+			drawing_board(Board)
 
 			turn += 1
 			turn = turn % 2
@@ -160,11 +159,11 @@ while not game_over:
 				posx = event.pos[0]
 				col = int(math.floor(posx/SQUARESIZE))
 
-				if available_location(board, col):
-					row = next_open_row(board, col)
-					fall_piece(board, row, col, 1)
+				if available_location(Board, col):
+					row = next_open_row(Board, col)
+					fall_piece(Board, row, col, 1)
 
-					if winning_move(board, 1):
+					if winning_move(Board, 1):
 						label = myfont.render("Player 1 wins!!", 1, RED)
 						screen.blit(label, (40,10))
 						game_over = True
@@ -173,18 +172,17 @@ while not game_over:
 				posx = event.pos[0]
 				col = int(math.floor(posx/SQUARESIZE))
 
+				if available_location(Board, col):
+					row = next_open_row(Board, col)
+					fall_piece(Board, row, col, 2)
 
-				if available_location(board, col):
-					row = next_open_row(board, col)
-					fall_piece(board, row, col, 2)
-
-					if winning_move(board, 2):
+					if winning_move(Board, 2):
 						label = myfont.render("Player 2 wins!!", 1, YELLOW)
 						screen.blit(label, (40,10))
 						game_over = True
 
-			printing_board(board)
-			drawing_board(board)
+			printing_board(Board)
+			drawing_board(Board)
 
 			turn += 1
 			turn = turn % 2
